@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pink block with thick black outline, hard offset shadow and a white play triangle -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#000000"
+        android:pathData="M34,34h48v48h-48z" />
+    <path
+        android:fillColor="#FF4D8D"
+        android:strokeColor="#000000"
+        android:strokeWidth="5"
+        android:pathData="M28,28h48v48h-48z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeColor="#000000"
+        android:strokeWidth="4"
+        android:strokeLineJoin="round"
+        android:pathData="M45,40L65,52L45,64Z" />
+</vector>
