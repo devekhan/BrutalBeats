@@ -25,6 +25,7 @@ import com.brutalbeats.player.data.prefs.SessionState
 import com.brutalbeats.player.data.prefs.SettingsStore
 import com.brutalbeats.player.data.repo.LibraryRepository
 import com.brutalbeats.player.di.ApplicationScope
+import com.brutalbeats.player.output.OutputDeviceMonitor
 import com.google.common.collect.ImmutableList
 import com.google.common.util.concurrent.Futures
 import com.google.common.util.concurrent.ListenableFuture
@@ -59,6 +60,7 @@ class PlaybackService : MediaSessionService() {
     @Inject lateinit var queueDao: QueueDao
     @Inject lateinit var effects: AudioEffectsManager
     @Inject lateinit var sleepTimer: SleepTimer
+    @Inject lateinit var outputMonitor: OutputDeviceMonitor
     @Inject @field:ApplicationScope lateinit var appScope: CoroutineScope
 
     private lateinit var exo: ExoPlayer
@@ -119,6 +121,8 @@ class PlaybackService : MediaSessionService() {
         exo.addListener(playerListener)
         effects.attach(exo.audioSessionId)
         sleepTimer.attach(exo)
+        outputMonitor.attachPlayer(exo)
+        outputMonitor.start()
 
         scope.launch {
             settingsStore.settings.collect { s ->
@@ -147,6 +151,7 @@ class PlaybackService : MediaSessionService() {
     override fun onDestroy() {
         finalizeTrack()
         persistPosition()
+        outputMonitor.attachPlayer(null)
         sleepTimer.detach()
         effects.release()
         session?.run {
