@@ -11,8 +11,8 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,17 +33,19 @@ import androidx.compose.ui.unit.dp
 
 /**
  * Liquid-glass bottom sheet with a scrim. It is drawn INSIDE the app's root layout (not in a
- * separate window), so the blur sees the screen behind it. Call it from the root Box, as a
- * sibling of the content marked with glassSource. Back button and scrim tap dismiss it.
+ * separate window), so the blur sees the screen behind it. Back button and scrim tap dismiss it.
+ * Set [scrollable] to false when the content has its own scrolling list.
  */
 @Composable
 fun BoxScope.BrutalSheet(
     visible: Boolean,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
+    scrollable: Boolean = true,
     content: @Composable ColumnScope.() -> Unit
 ) {
     BackHandler(enabled = visible, onBack = onDismiss)
+    val scroll = rememberScrollState()
 
     AnimatedVisibility(
         visible = visible,
@@ -82,7 +84,7 @@ fun BoxScope.BrutalSheet(
         ) {
             Column(
                 Modifier
-                    .verticalScroll(rememberScrollState())
+                    .then(if (scrollable) Modifier.verticalScroll(scroll) else Modifier)
                     .padding(20.dp),
                 content = content
             )
