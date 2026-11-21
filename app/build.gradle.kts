@@ -80,4 +80,5 @@ dependencies {
     implementation(libs.androidx.mediarouter)
     implementation(libs.coil.compose)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.kotlinx.coroutines.guava)
 }
