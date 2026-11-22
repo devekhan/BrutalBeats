@@ -16,8 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.graphics.drawscope.drawOutline
+import androidx.compose.ui.graphics.addOutline
 import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
@@ -39,7 +40,8 @@ fun Modifier.hardShadow(
     val o = offset.toPx() * (1f - collapse())
     if (o > 0.01f) {
         val outline = shape.createOutline(size, layoutDirection, this)
-        translate(o, o) { drawOutline(outline, color) }
+        val path = Path().apply { addOutline(outline) }
+        translate(o, o) { drawPath(path, color) }
     }
 }
 
